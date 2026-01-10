@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Search Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        /* 基本背景 */
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .hidden-section { display: none; }
+
+        /* Discord ツールチップ */
+        .tooltip-container { position: relative; }
+        .tooltip-text {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1e293b;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 50;
+            margin-top: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* 詳細設定ボタン */
+        .config-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+        }
+        .dark .config-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+        }
+        .light .config-btn {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+        }
+        .config-btn.active {
+            border-color: #3b82f6 !important;
+            color: #3b82f6 !important;
+        }
+
+        .arrow-icon { transition: transform 0.3s ease; }
+        .active .arrow-icon { transform: rotate(180deg); }
+
+        /* 入力欄 */
+        .input-base {
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .dark .input-base {
+            background-color: #1e293b;
+            border-color: #334155;
+            color: #f8fafc;
+        }
+        .light .input-base {
+            background-color: #ffffff;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+        .input-base:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-open { animation: slideDown 0.3s ease-out forwards; }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-12 bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-slate-100">
+
+    <!-- ヘッダー -->
+    <nav class="max-w-2xl mx-auto flex justify-end items-center gap-5 mb-12">
+        <!-- Discord Link -->
+        <div class="tooltip-container">
+            <a href="https://discord.gg/hfpbbCBPFP" target="_blank" class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold transition-colors text-sm">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                </svg>
+                Discord
+            </a>
+            <div class="tooltip-text">開発サーバーで提案ができる</div>
+        </div>
+        <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">使い方</a>
+        <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">To Scratch team</a>
+        
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:scale-105 transition-all text-orange-500 dark:text-yellow-300">
+            <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+    </nav>
+
+    <main class="max-w-2xl mx-auto">
+        <!-- Search Type Select -->
+        <div class="flex justify-center gap-3 mb-8">
+            <label class="cursor-pointer">
+                <input type="radio" id="search-content" name="stype" class="hidden peer" checked>
+                <div class="px-5 py-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 transition-all font-bold text-sm">
+                    投稿内容で検索
+                </div>
+            </label>
+            <label class="cursor-pointer">
+                <input type="radio" id="search-author" name="stype" class="hidden peer">
+                <div class="px-5 py-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 transition-all font-bold text-sm">
+                    投稿者から検索
+                </div>
+            </label>
+        </div>
+
+        <!-- Main Search Bar -->
+        <div class="relative mb-10">
+            <input type="text" placeholder="キーワードを入力..." class="input-base w-full px-6 py-4 rounded-2xl text-lg shadow-lg transition-all">
+            <button class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </button>
+        </div>
+
+        <!-- Advanced Panel Container -->
+        <section class="bg-white dark:bg-slate-800/40 rounded-[28px] p-7 border border-slate-200 dark:border-slate-700/50 shadow-xl">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Advanced Settings</h2>
+                <button id="toggle-settings" class="config-btn text-xs">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                    <span id="btn-text">詳細設定を表示</span>
+                </button>
+            </div>
+
+            <div id="settings-panel" class="hidden-section space-y-10 mt-8 animate-open">
+                <!-- Rule Selection -->
+                <div class="flex gap-4">
+                    <label class="flex-1 cursor-pointer">
+                        <input type="checkbox" id="rule-only" class="hidden peer">
+                        <div class="text-center p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-base font-bold text-slate-500 dark:text-slate-400 peer-checked:border-blue-500 peer-checked:text-blue-600 dark:peer-checked:text-blue-400 transition-all">ルールのみを検索する</div>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                        <input type="checkbox" id="rule-exclude" class="hidden peer">
+                        <div class="text-center p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-base font-bold text-slate-500 dark:text-slate-400 peer-checked:border-red-500 peer-checked:text-red-600 dark:peer-checked:text-red-400 transition-all">ルール投稿を除外する</div>
+                    </label>
+                </div>
+
+                <!-- Range Settings -->
+                <div class="space-y-4">
+                    <div class="p-5 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                        <label class="flex items-center gap-3 cursor-pointer mb-4">
+                            <input type="checkbox" id="check-date" class="w-5 h-5 rounded-md text-blue-600 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <span class="text-lg font-bold">日付で絞り込む</span>
+                        </label>
+                        <div id="box-date" class="hidden-section flex items-center gap-3 ml-8">
+                            <input type="date" class="input-base rounded-lg px-3 py-2 text-base">
+                            <span class="text-slate-400 font-bold">〜</span>
+                            <input type="date" class="input-base rounded-lg px-3 py-2 text-base">
+                        </div>
+                    </div>
+
+                    <div class="p-5 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                        <label class="flex items-center gap-3 cursor-pointer mb-4">
+                            <input type="checkbox" id="check-len" class="w-5 h-5 rounded-md text-blue-600 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <span class="text-lg font-bold">投稿文字数で絞り込む</span>
+                        </label>
+                        <div id="box-len" class="hidden-section flex items-center gap-3 ml-8">
+                            <input type="number" placeholder="最小" class="input-base rounded-lg px-4 py-2 text-base w-28">
+                            <span class="text-slate-400 font-bold">〜</span>
+                            <input type="number" placeholder="最大" class="input-base rounded-lg px-4 py-2 text-base w-28">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Settings -->
+                <div class="pt-8 border-t border-slate-200 dark:border-slate-700/50 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold">1ページの表示数</span>
+                        <select class="input-base rounded-lg px-4 py-2 text-lg font-bold outline-none cursor-pointer">
+                            <option>20件</option><option>50件</option><option>100件</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" class="w-5 h-5 rounded-md text-blue-600 border-slate-300 dark:border-slate-600">
+                            <span class="text-base font-bold opacity-70 group-hover:opacity-100 transition-opacity">投稿の装飾を無効にする</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" class="w-5 h-5 rounded-md text-blue-600 border-slate-300 dark:border-slate-600">
+                            <span class="text-base font-bold opacity-70 group-hover:opacity-100 transition-opacity">画像を非表示にする</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        function updateTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function initTheme() {
+            const now = Date.now();
+            const savedTime = localStorage.getItem('theme-time');
+            const savedMode = localStorage.getItem('theme-mode');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTime && (now - savedTime < 3600000)) {
+                updateTheme(savedMode === 'dark');
+            } else {
+                updateTheme(systemDark);
+                localStorage.setItem('theme-mode', systemDark ? 'dark' : 'light');
+                localStorage.setItem('theme-time', now);
+            }
+            refreshSubPanels();
+        }
+
+        themeToggle.onclick = () => {
+            const isDark = !document.documentElement.classList.contains('dark');
+            updateTheme(isDark);
+            localStorage.setItem('theme-mode', isDark ? 'dark' : 'light');
+            localStorage.setItem('theme-time', Date.now());
+        };
+
+        const configBtn = document.getElementById('toggle-settings');
+        const panel = document.getElementById('settings-panel');
+        const btnText = document.getElementById('btn-text');
+
+        configBtn.onclick = () => {
+            const isHidden = panel.style.display === 'none' || panel.style.display === '';
+            panel.style.display = isHidden ? 'block' : 'none';
+            configBtn.classList.toggle('active', isHidden);
+            btnText.innerText = isHidden ? '詳細設定を閉じる' : '詳細設定を表示';
+        };
+
+        const r1 = document.getElementById('rule-only');
+        const r2 = document.getElementById('rule-exclude');
+        r1.onchange = () => { if(r1.checked) r2.checked = false; };
+        r2.onchange = () => { if(r2.checked) r1.checked = false; };
+
+        const setupDisplay = (checkId, boxId) => {
+            const ck = document.getElementById(checkId);
+            const bx = document.getElementById(boxId);
+            const update = () => bx.style.display = ck.checked ? 'flex' : 'none';
+            ck.onchange = update;
+            return update;
+        };
+        const updateDate = setupDisplay('check-date', 'box-date');
+        const updateLen = setupDisplay('check-len', 'box-len');
+
+        function refreshSubPanels() {
+            updateDate();
+            updateLen();
+        }
+
+        initTheme();
+
+// 1. バージョンID（サーバー側と一致させる）
+const CURRENT_VERSION_ID = "v2026_gen_alpha_01"; 
+
+/**
+ * 検索ボタン押下時に実行されるメイン関数
+ */
+const executeSearch = async () => {
+    // 検索キーワードの取得
+    const searchInput = document.querySelector('input[placeholder="キーワードを入力..."]');
+    const keyword = searchInput.value.trim();
+
+    if (!keyword) {
+        alert("キーワードを入力してください。");
+        searchInput.focus();
+        return;
+    }
+
+    // A. 検索タイプの判定 (投稿内容 or 投稿者)
+    const stypeInputs = document.querySelectorAll('input[name="stype"]');
+    const searchType = stypeInputs[1].checked ? "author" : "content";
+
+    // B. ルール設定の取得
+    const isRuleOnly = document.getElementById('rule-only').checked;
+    const isRuleExclude = document.getElementById('rule-exclude').checked;
+    let ruleMode = "none";
+    if (isRuleOnly) ruleMode = "only";
+    if (isRuleExclude) ruleMode = "exclude";
+
+    // C. 日付範囲の取得
+    const isDateEnabled = document.getElementById('check-date').checked;
+    const dateInputs = document.querySelectorAll('#box-date input[type="date"]');
+    const dateStart = isDateEnabled ? dateInputs[0].value : "";
+    const dateEnd = isDateEnabled ? dateInputs[1].value : "";
+
+    // D. 文字数範囲の取得
+    const isLenEnabled = document.getElementById('check-len').checked;
+    const lenInputs = document.querySelectorAll('#box-len input[type="number"]');
+    const lenMin = isLenEnabled ? lenInputs[0].value : "";
+    const lenMax = isLenEnabled ? lenInputs[1].value : "";
+
+    // E. 表示件数の取得
+    const limitSelect = document.querySelector('select');
+    const limit = limitSelect ? limitSelect.value.replace("件", "") : "20";
+
+    // F. クエリパラメータの構築（全部入り）
+    const params = new URLSearchParams();
+    params.append("q", keyword);
+    params.append("type", searchType);
+    params.append("rule", ruleMode);
+    params.append("ds", dateStart);
+    params.append("de", dateEnd);
+    params.append("lmin", lenMin);
+    params.append("lmax", lenMax);
+    params.append("limit", limit);
+    params.append("vid", CURRENT_VERSION_ID);
+
+    // --- 通信処理 ---
+    const targetUrl = "https://forumkensaku.kouryou-118103.workers.dev";
+    
+    try {
+        const searchBtn = document.querySelector('button.absolute.right-5');
+        searchBtn.style.opacity = "0.5";
+
+        // Workersへデータを送る
+        const response = await fetch(`${targetUrl}?${params.toString()}`);
+        const data = await response.json();
+
+        // Workersからメッセージが返ってきた場合
+        if (data.message) {
+            alert(`【開発部からの返信】\n${data.message}`);
+        }
+    } catch (error) {
+        console.error("通信エラー:", error);
+        alert("Workersに接続できませんでした。設定を確認してください。");
+    } finally {
+        document.querySelector('button.absolute.right-5').style.opacity = "1";
+    }
+};
+// 検索アイコンボタンのクリック
+const searchBtn = document.querySelector('button.absolute.right-5');
+if (searchBtn) {
+    searchBtn.onclick = (e) => {
+        e.preventDefault();
+        executeSearch();
+    };
+}
+
+// キーワード入力欄でのEnterキー押下
+const mainInput = document.querySelector('input[placeholder="キーワードを入力..."]');
+if (mainInput) {
+    mainInput.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            executeSearch();
+        }
+    };
+}
+    </script>
+</body>
+</html>

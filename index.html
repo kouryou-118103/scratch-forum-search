@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Search Portal</title>
+    <title>ファーラム検索 | Scratchフォーラムの投稿を検索</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' }
@@ -112,8 +112,8 @@
             </a>
             <div class="tooltip-text">開発サーバーで提案ができる</div>
         </div>
-        <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">使い方</a>
-        <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">To Scratch team</a>
+        <a href="https://kouryou-118103.github.io/scratch-forum-search/usage/" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">使い方</a>
+        <a href="https://kouryou-118103.github.io/scratch-forum-search/scratchteam/" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">To Scratch team</a>
         
         <!-- Theme Toggle -->
         <button id="theme-toggle" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:scale-105 transition-all text-orange-500 dark:text-yellow-300">
@@ -352,7 +352,7 @@ const executeSearch = async () => {
     params.append("vid", CURRENT_VERSION_ID);
 
     // --- 通信処理 ---
-    const targetUrl = "https://forumkensaku.burrs-coding-8u.workers.dev/";
+    const targetUrl = "https://forumkensaku.burrs-coding-8u.workers.dev";
     
     try {
         const searchBtn = document.querySelector('button.absolute.right-5');

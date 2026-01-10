@@ -10,8 +10,8 @@
     </script>
     <style>
         /* 小さなユーティリティ（Tailwindだけに依存しない部分）*/
-        body { transition: background-color 0.25s, color 0.25s; }
-        .hidden-section { display: none; }
+        body { transition: background-color 0.25s, color 0.25s; }      
+        .hidden-section { display: none; !important}
         .hidden-section.open { display: block; }
         .tooltip-container { position: relative; display:inline-block; }
         .tooltip-text {
@@ -41,8 +41,8 @@
         .config-btn.active .arrow-icon { transform: rotate(180deg); }
 
         .input-base { transition: all 0.15s; border: 2px solid transparent; }
+        .dark .input-base {background-color: #1e293b; /* slate-800相当 */color: #f1f5f9; border-color: #334155; }
         .input-base:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 4px rgba(59,130,246,0.08); }
-
         @keyframes slideDown { from { opacity:0; transform: translateY(-8px); } to { opacity:1; transform: translateY(0);} }
         .animate-open { animation: slideDown 0.28s ease-out forwards; }
 
@@ -110,7 +110,7 @@
             <section class="bg-white dark:bg-slate-800/40 rounded-[28px] p-7 border border-slate-200 dark:border-slate-700/50 shadow-xl">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Advanced Settings</h2>
-                    <button id="toggle-settings" class="config-btn text-xs" aria-expanded="false" aria-controls="settings-panel">
+                    <button type="button" id="toggle-settings" class="config-btn text-xs" aria-expanded="false" aria-controls="settings-panel">
                         <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
                         <span id="btn-text">詳細設定を表示</span>
                     </button>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使い方 - フォーラム検索</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        body { transition: background-color 0.3s, color 0.3s; }
+        .content-card {
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid #e2e8f0;
+        }
+        .dark .content-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-12 bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-slate-100">
+
+    <nav class="max-w-2xl mx-auto flex justify-between items-center mb-12">
+        <a href="https://kouryou-118103.github.io/scratch-forum-search/" class="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-black hover:scale-105 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+            </svg>
+            戻る
+        </a>
+        
+        <button id="theme-toggle" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm text-orange-500 dark:text-yellow-300">
+            <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+    </nav>
+
+    <main class="max-w-2xl mx-auto">
+        <header class="mb-10">
+            <h1 class="text-3xl font-black mb-2">使い方ガイド</h1>
+            <p class="text-slate-500 dark:text-slate-400">この検索サイトを最大限に活用する方法を紹介します。</p>
+        </header>
+
+        <section class="space-y-6">
+            <div class="content-card p-6 rounded-[28px] shadow-xl">
+                <div class="flex items-start gap-4">
+                    <div class="bg-blue-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">キーワードを入力</h3>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            メインの検索バーに探したい単語を入力します。「投稿内容」または「投稿者名」で検索モードを切り替えることができます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card p-6 rounded-[28px] shadow-xl">
+                <div class="flex items-start gap-4">
+                    <div class="bg-blue-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shrink-0">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">詳細設定を活用</h3>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            「詳細設定を表示」をクリックすると、日付範囲や文字数、表示件数を絞り込むことができます。特定の期間の議論を探すときなどに便利です。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 p-6 rounded-[28px] bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50">
+                <h3 class="text-amber-700 dark:text-amber-400 font-bold flex items-center gap-2 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                    メンテナンスについて
+                </h3>
+                <p class="text-amber-800/80 dark:text-amber-400/80 text-sm">
+                    毎日 3:00〜3:30 (JST) はサーバーメンテナンスのため、検索機能が利用できません。(木曜日はサーバーバックアップ等も実行するため3:00~4:00(JST)になります。)あらかじめご了承ください。
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ダークモード切り替えロジック（index.htmlと共有）
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        function updateTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        themeToggle.onclick = () => {
+            const isDark = !document.documentElement.classList.contains('dark');
+            updateTheme(isDark);
+            localStorage.setItem('theme-mode', isDark ? 'dark' : 'light');
+        };
+
+        // 初期化
+        const savedMode = localStorage.getItem('theme-mode');
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        updateTheme(savedMode === 'dark' || (!savedMode && systemDark));
+    </script>
+</body>
+</html>

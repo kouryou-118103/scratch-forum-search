@@ -11,8 +11,8 @@
     <style>
         /* 小さなユーティリティ（Tailwindだけに依存しない部分）*/
         body { transition: background-color 0.25s, color 0.25s; }      
-        .hidden-section { display: none; !important}
-        .hidden-section.open { display: block; }
+        .hidden-section { visibility: hidden; opacity: 0; height: 0; overflow: hidden; pointer-events: none; }
+        .hidden-section.open { visibility: visible; opacity: 1; height: auto; pointer-events: auto;}
         .tooltip-container { position: relative; display:inline-block; }
         .tooltip-text {
             visibility: hidden;
@@ -67,9 +67,9 @@
             <div class="tooltip-text" role="tooltip">開発サーバーで提案ができる</div>
         </div>
 
-        <a href="https://kouryou-118103.github.io/scratch-forum-search/usage/" target="_blank" rel="noopener noreferrer"
+        <a href="https://kouryou-118103.github.io/scratch-forum-search/usage/" rel="noopener noreferrer"
            class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">使い方</a>
-        <a href="https://kouryou-118103.github.io/scratch-forum-search/scratchteam/" target="_blank" rel="noopener noreferrer"
+        <a href="https://kouryou-118103.github.io/scratch-forum-search/scratchteam/" rel="noopener noreferrer"
            class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors text-sm">To Scratch team</a>
 
         <button id="theme-toggle" aria-label="テーマ切替" aria-pressed="false"
@@ -107,9 +107,9 @@
                 </button>
             </div>
 
-            <section class="bg-white dark:bg-slate-800/40 rounded-[28px] p-7 border border-slate-200 dark:border-slate-700/50 shadow-xl">
+            <section class="bg-white dark:bg-slate-800/40 rounded-[28px] p-7 border border-slate-200 dark:border-slate-600/60 shadow-xl">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Advanced Settings</h2>
+                <h2 class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">Advanced Settings</h2>
                     <button type="button" id="toggle-settings" class="config-btn text-xs" aria-expanded="false" aria-controls="settings-panel">
                         <svg xmlns="http://www.w3.org/2000/svg" class="arrow-icon h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
                         <span id="btn-text">詳細設定を表示</span>
@@ -120,23 +120,23 @@
                     <div class="flex gap-4">
                         <label for="rule-only" class="flex-1 cursor-pointer">
                             <input type="checkbox" id="rule-only" class="hidden peer">
-                            <div class="text-center p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-base font-bold text-slate-500 dark:text-slate-400 peer-checked:border-blue-500 peer-checked:text-blue-600 dark:peer-checked:text-blue-400 transition-all">ルールのみを検索</div>
+                            <div class="text-center p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-base font-bold text-slate-500 dark:text-slate-400 peer-checked:border-emerald-500 peer-checked:text-emerald-600 dark:peer-checked:text-emerald-400 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/20 dark:peer-checked:shadow-md transition-all"> ルールのみを検索 </div>
                         </label>
                         <label for="rule-exclude" class="flex-1 cursor-pointer">
                             <input type="checkbox" id="rule-exclude" class="hidden peer">
-                            <div class="text-center p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-base font-bold text-slate-500 dark:text-slate-400 peer-checked:border-red-500 peer-checked:text-red-600 dark:peer-checked:text-red-400 transition-all">ルール投稿を除外</div>
+                            <div class="text-center p-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-base font-bold text-slate-500 dark:text-slate-400 peer-checked:border-red-500 peer-checked:text-red-600 dark:peer-checked:text-red-400 peer-checked:bg-red-50 dark:peer-checked:bg-red-900/20 dark:peer-checked:shadow-md transition-all">ルール投稿を除外</div>
                         </label>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 cursor-pointer group hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                        <label class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-300 dark:border-slate-700 cursor-pointer group hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
                             <input type="checkbox" id="ex-quote" class="w-5 h-5 rounded accent-blue-600" checked>
                             <div>
                                 <p class="font-bold text-sm">引用内を検索しない</p>
                                 <p class="text-[10px] text-slate-400">返信時の引用文を無視します</p>
                             </div>
                         </label>
-                        <label class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 cursor-pointer group hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                        <label class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-300 dark:border-slate-700 cursor-pointer group hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
                             <input type="checkbox" id="ex-code" class="w-5 h-5 rounded accent-blue-600">
                             <div>
                                 <p class="font-bold text-sm">Code内を検索しない</p>
@@ -146,9 +146,9 @@
                     </div>
 
                     <div class="space-y-4">
-                        <div class="p-5 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                        <div class="p-5 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-300 dark:border-slate-600/60">
                             <label for="check-date" class="flex items-center gap-3 cursor-pointer mb-4">
-                                <input type="checkbox" id="check-date" class="w-5 h-5 rounded-md text-blue-600">
+                                <input type="checkbox" id="check-date" class="w-5 h-5 rounded-md accent-blue-600">
                                 <span class="text-lg font-bold">日付で絞り込む</span>
                             </label>
                             <div id="box-date" class="hidden-section flex items-center gap-3 ml-8" aria-hidden="true">
@@ -160,9 +160,9 @@
                             </div>
                         </div>
 
-                        <div class="p-5 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                        <div class="p-5 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-300 dark:border-slate-600/60">
                             <label for="check-len" class="flex items-center gap-3 cursor-pointer mb-4">
-                                <input type="checkbox" id="check-len" class="w-5 h-5 rounded-md text-blue-600">
+                                <input type="checkbox" id="check-len" class="w-5 h-5 rounded-md accent-blue-600">
                                 <span class="text-lg font-bold">投稿文字数で絞り込む</span>
                             </label>
                             <div id="box-len" class="hidden-section flex items-center gap-3 ml-8" aria-hidden="true">
@@ -175,7 +175,7 @@
                         </div>
                     </div>
 
-                    <div class="pt-8 border-t border-slate-200 dark:border-slate-700/50 space-y-6">
+                    <div class="pt-8 border-t border-slate-200 dark:border-slate-600/60 space-y-6">
                         <div class="flex items-center justify-between">
                             <label class="text-lg font-bold" for="per-page">1ページの表示数</label>
                             <select id="per-page" class="input-base rounded-lg px-4 py-2 text-lg font-bold outline-none cursor-pointer">
@@ -300,7 +300,7 @@
             }
             results.forEach((post, index) => {
                 const card = document.createElement('div');
-                card.className = `bg-white dark:bg-slate-800/60 p-6 rounded-3xl border border-slate-200 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer animate-open`;
+                card.className = `bg-white dark:bg-slate-800/60 p-6 rounded-3xl border border-slate-200 dark:border-slate-600/60 shadow-sm hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer animate-open`;
                 card.style.animationDelay = `${index * 50}ms`;
 
                 const postUrl = `https://scratch.mit.edu/discuss/post/${encodeURIComponent(post.id)}/`;
@@ -381,10 +381,20 @@
         // ----- 検索実行 -----
         let ongoing = false;
         async function executeSearch() {
-            if (ongoing) return;
             const keyword = keywordInput.value.trim();
-            if (!keyword) { alert('キーワードを入力してください。'); keywordInput.focus(); return; }
+            if (!keyword) {keywordInput.focus(); return; }
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                panel.classList.remove('animate-open');
+                panel.setAttribute('aria-hidden', 'true');
+                configBtn.classList.remove('active');
+                configBtn.setAttribute('aria-expanded', 'false');
+                btnText.innerText = '詳細設定を表示';
+            }
+            keywordInput.focus();
 
+            if (ongoing) return;
+          
             ongoing = true;
             searchBtn.disabled = true;
             // ローディング表示
